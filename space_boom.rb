@@ -14,6 +14,7 @@ class SpaceBoom < Gosu::Window
     @lasers = []
     @enemies = [Ufo.new(self)]
     @laser_sound = Gosu::Sample.new('sounds/laser1.ogg')
+    @explosion_sound = Gosu::Sample.new('sounds/explosion.wav')
   end
 
   def update
@@ -25,10 +26,22 @@ class SpaceBoom < Gosu::Window
     
     @player.move
 
-
     @lasers.dup.each do |laser|
       @lasers.delete laser if laser.out_of_screen?
-      print "out" if laser.out_of_screen?
+
+      @enemies.each do |enemy|
+        if enemy.collide?(laser)
+          @lasers.delete laser
+          enemy.hit
+        end
+      end
+    end
+
+    @enemies.dup.each do |enemy|
+      if enemy.dead?
+        @enemies.delete enemy
+        @explosion_sound.play
+      end
     end
     
     @lasers.each do |laser|

@@ -1,6 +1,8 @@
 class Laser
   SPEED = 8
   SIZE = 57
+
+  attr_reader :x, :y
   
   def initialize(window, x, y, angle)
     @window = window
@@ -24,5 +26,9 @@ class Laser
       @x - SIZE > @window.width or
       @y + SIZE < 0 or
       @y - SIZE > @window.height
+  end
+
+  def radius
+    SIZE/2
   end
 end
