@@ -1,6 +1,7 @@
 require 'gosu'
 require_relative 'player'
 require_relative 'laser'
+require_relative 'ufo'
 
 class SpaceBoom < Gosu::Window
   WIDTH = 800
@@ -11,6 +12,7 @@ class SpaceBoom < Gosu::Window
     self.caption = "Space Boom"
     @player = Player.new(self)
     @lasers = []
+    @enemies = [Ufo.new(self)]
     @laser_sound = Gosu::Sample.new('sounds/laser1.ogg')
   end
 
@@ -32,12 +34,19 @@ class SpaceBoom < Gosu::Window
     @lasers.each do |laser|
       laser.move
     end
+
+    @enemies.each do |enemy|
+      enemy.move
+    end
   end
 
   def draw
     @player.draw
     @lasers.each do |laser|
       laser.draw
+    end
+    @enemies.each do |enemy|
+      enemy.draw
     end
   end
 
