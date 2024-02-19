@@ -2,6 +2,8 @@ class Player
   ACCELERATION = 0.2
   MAX_SPEED = 12
   FRICTION = 0.98
+
+  attr_reader :x, :y
   
   def initialize(window)
     @window = window

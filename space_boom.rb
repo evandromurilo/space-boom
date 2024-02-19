@@ -1,5 +1,6 @@
 require 'gosu'
 require_relative 'player'
+require_relative 'laser'
 
 class SpaceBoom < Gosu::Window
   WIDTH = 800
@@ -9,6 +10,8 @@ class SpaceBoom < Gosu::Window
     super(WIDTH, HEIGHT)
     self.caption = "Space Boom"
     @player = Player.new(self)
+    @lasers = []
+    @laser_sound = Gosu::Sample.new('sounds/laser1.ogg')
   end
 
   def update
@@ -19,10 +22,40 @@ class SpaceBoom < Gosu::Window
     end
     
     @player.move
+
+
+    @lasers.dup.each do |laser|
+      @lasers.delete laser if laser.out_of_screen?
+      print "out" if laser.out_of_screen?
+    end
+    
+    @lasers.each do |laser|
+      laser.move
+    end
   end
 
   def draw
     @player.draw
+    @lasers.each do |laser|
+      laser.draw
+    end
+  end
+
+  def button_down(id)
+    shoot if id == Gosu::MsRight
+  end
+
+  def shoot
+    @lasers.push(Laser.new(self, @player.x, @player.y, @player.angle))
+    @laser_sound.play
+  end
+
+  def width
+    WIDTH
+  end
+
+  def height
+    HEIGHT
   end
 end
 
