@@ -6,13 +6,14 @@ require_relative 'ufo'
 class SpaceBoom < Gosu::Window
   WIDTH = 800
   HEIGHT = 600
+  ENEMY_FREQUENCY = 0.01
 
   def initialize
     super(WIDTH, HEIGHT)
     self.caption = "Space Boom"
     @player = Player.new(self)
     @lasers = []
-    @enemies = [Ufo.new(self)]
+    @enemies = []
     @laser_sound = Gosu::Sample.new('sounds/laser1.ogg')
     @explosion_sound = Gosu::Sample.new('sounds/explosion.wav')
   end
@@ -50,6 +51,10 @@ class SpaceBoom < Gosu::Window
 
     @enemies.each do |enemy|
       enemy.move
+    end
+
+    if rand < ENEMY_FREQUENCY
+      @enemies.push Ufo.new(self)
     end
   end
 
