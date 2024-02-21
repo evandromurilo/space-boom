@@ -49,6 +49,15 @@ class SpaceBoom < Gosu::Window
       laser.move
     end
 
+    if not @player.invunerable?
+      @enemies.each do |enemy|
+        if enemy.collide? @player
+          @player.hit
+          @explosion_sound.play
+        end
+      end
+    end
+
     @enemies.each do |enemy|
       enemy.move
     end

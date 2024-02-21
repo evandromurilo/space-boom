@@ -12,7 +12,12 @@ class Player
     @y = 200
     @speed_x = 0
     @speed_y = 0
+    @hit_time = 0
     @momentum = 0
+  end
+
+  def radius
+    37.5
   end
 
   def angle
@@ -39,6 +44,18 @@ class Player
   end
 
   def draw
-    @image.draw_rot(@x, @y, 1, angle)
+    if @hit_time > Gosu::milliseconds
+      @image.draw_rot(@x, @y, 1, angle, 0.5, 0.5, 1, 1, 0xFFFF0000)
+    else
+      @image.draw_rot(@x, @y, 1, angle)
+    end
+  end
+
+  def hit
+    @hit_time = Gosu::milliseconds + 600
+  end
+
+  def invunerable?
+    @hit_time > Gosu::milliseconds
   end
 end
